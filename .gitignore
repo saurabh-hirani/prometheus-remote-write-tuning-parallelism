@@ -1,0 +1,11 @@
+*
+!remote-write-receiver
+!avalanche
+!avalanche/Dockerfile
+!remote-write-receiver/main.go
+!remote-write-receiver/go.mod
+!remote-write-receiver/Dockerfile
+!.gitignore
+!*.sh
+!*.yaml.*
+!*.yaml

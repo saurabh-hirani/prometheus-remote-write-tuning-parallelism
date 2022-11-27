@@ -1,0 +1,35 @@
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.39.1
+    ports:
+      - 9090:9090/tcp
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.retention.time=1h'
+      # - '--enable-feature=agent'
+    networks:
+      - monitoring
+  avalanche:
+    build: ./avalanche
+    image: prometheus/avalanche
+    ports:
+      - 9001:9001/tcp
+    networks:
+      - monitoring
+  remote-write-receiver:
+    build: ./remote-write-receiver
+    environment:
+      OUTPUT_DIR: ${OUTPUT_DIR}
+    volumes:
+      - ./output:/var/tmp/output
+    ports:
+      - 9179:9179/tcp
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

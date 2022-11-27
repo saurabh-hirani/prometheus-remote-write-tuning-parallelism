@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'proemtheus-01'
+    static_configs:
+      - targets: [ 'prometheus:9090' ]
+  - job_name: 'avalanche-01'
+    static_configs:
+      - targets: [ 'avalanche:9001' ]
+
+remote_write:
+  - url: http://remote-write-receiver:9179/write
+    # Prometheus default queue config
+    queue_config:
+      max_shards: 200
+      capacity: 2500
+      max_samples_per_send: 500
